@@ -1,35 +1,37 @@
 # 🚀 Tiny Backend API with SQLite
 
-A lightweight **Flask REST API** that demonstrates the fundamentals of backend development using **Python**, **Flask**, and **SQLite**. This project implements a complete **CRUD (Create, Read, Update, Delete)** API with persistent data storage and serves as a practical introduction to RESTful API development.
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
+![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask)
+![SQLite](https://img.shields.io/badge/Database-SQLite-blue?logo=sqlite)
+![License](https://img.shields.io/badge/License-Educational-green)
+
+A lightweight RESTful API built with **Python**, **Flask**, and **SQLite** that demonstrates complete CRUD (Create, Read, Update, Delete) operations. This project was developed as part of the **FlyRank Backend Internship** to learn backend development, database integration, REST APIs, SQL, and GitHub workflow.
 
 ---
 
-## 📖 Project Overview
+# 📖 Project Overview
 
-This project was developed as part of the **FlyRank Backend Internship** to understand:
+This project demonstrates how a backend application communicates with a SQLite database to store and manage persistent data.
 
-- Building REST APIs with Flask
-- Working with SQLite databases
-- Implementing CRUD operations
-- Executing SQL queries
-- Testing APIs using Browser and cURL
-- Managing projects with Git & GitHub
-
-Unlike the first assignment, where data existed only in memory, this project stores data permanently in a SQLite database (`tasks.db`).
+Unlike Assignment 1, where tasks were stored in memory and disappeared after restarting the server, this version stores all tasks inside a SQLite database (`tasks.db`), allowing data to persist across application restarts.
 
 ---
 
 # ✨ Features
 
-- ✅ RESTful API
-- ✅ SQLite database integration
-- ✅ Persistent data storage
-- ✅ Complete CRUD operations
-- ✅ JSON responses
-- ✅ Input validation
-- ✅ Proper HTTP status codes
-- ✅ Parameterized SQL queries
-- ✅ Tested with Browser, cURL & DB Browser for SQLite
+- ✅ Flask REST API
+- ✅ SQLite Database Integration
+- ✅ Complete CRUD Operations
+- ✅ Persistent Data Storage
+- ✅ Automatic Database Creation
+- ✅ Automatic Table Creation
+- ✅ Automatic Sample Data Seeding
+- ✅ JSON Responses
+- ✅ Input Validation
+- ✅ Proper HTTP Status Codes
+- ✅ Parameterized SQL Queries
+- ✅ Browser & cURL Testing
+- ✅ SQL Practice with DB Browser for SQLite
 
 ---
 
@@ -39,10 +41,10 @@ Unlike the first assignment, where data existed only in memory, this project sto
 |------------|---------|
 | Python 3 | Programming Language |
 | Flask | Backend Framework |
-| SQLite3 | Database |
+| SQLite3 | Local Database |
 | DB Browser for SQLite | Database Viewer |
 | Git | Version Control |
-| GitHub | Project Hosting |
+| GitHub | Source Code Hosting |
 | cURL | API Testing |
 
 ---
@@ -53,19 +55,34 @@ Unlike the first assignment, where data existed only in memory, this project sto
 tiny-backend/
 │
 ├── app.py
-├── database.py
-├── tasks.db
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
-└── venv/
+├── images/
+│   └── database.png
+└── tasks.db (created automatically)
 ```
+
+---
+
+# 💡 Why SQLite?
+
+SQLite was chosen because it is:
+
+- Lightweight
+- Serverless
+- Zero configuration
+- Fast for small projects
+- Stores everything inside one database file
+- Perfect for learning backend development
+
+Unlike storing data in Python lists, SQLite keeps data even after restarting the application.
 
 ---
 
 # ⚙️ Installation
 
-## 1️⃣ Clone Repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/tiny-backend.git
@@ -77,7 +94,7 @@ cd tiny-backend
 
 ---
 
-## 2️⃣ Create Virtual Environment
+## Create Virtual Environment
 
 ### Windows
 
@@ -93,15 +110,12 @@ venv\Scripts\activate
 
 ```bash
 python3 -m venv venv
-```
-
-```bash
 source venv/bin/activate
 ```
 
 ---
 
-## 3️⃣ Install Dependencies
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -109,17 +123,27 @@ pip install -r requirements.txt
 
 ---
 
-## 4️⃣ Start Server
+# ▶️ Run the Project
+
+Start the Flask server:
 
 ```bash
 python app.py
 ```
 
-Server runs on
+Server URL
 
 ```
 http://127.0.0.1:5000
 ```
+
+The application automatically:
+
+- Creates `tasks.db`
+- Creates the `tasks` table
+- Inserts three sample tasks (only if the table is empty)
+
+No manual database setup is required.
 
 ---
 
@@ -131,7 +155,9 @@ Database File
 tasks.db
 ```
 
-Table
+The database file is automatically generated the first time the application runs.
+
+Table Structure
 
 ```sql
 CREATE TABLE tasks (
@@ -145,7 +171,7 @@ CREATE TABLE tasks (
 
 # 🌐 API Endpoints
 
-## 📌 Get All Tasks
+## Get All Tasks
 
 ```http
 GET /tasks
@@ -155,17 +181,17 @@ Response
 
 ```json
 [
-  {
-    "id":1,
-    "title":"Learn SQLite",
-    "done":0
-  }
+    {
+        "id":1,
+        "title":"Learn SQLite",
+        "done":0
+    }
 ]
 ```
 
 ---
 
-## 📌 Get Single Task
+## Get Single Task
 
 ```http
 GET /tasks/1
@@ -173,7 +199,7 @@ GET /tasks/1
 
 ---
 
-## 📌 Create Task
+## Create Task
 
 ```http
 POST /tasks
@@ -205,7 +231,7 @@ Status Code
 
 ---
 
-## 📌 Update Task
+## Update Task
 
 ```http
 PUT /tasks/4
@@ -238,7 +264,7 @@ Status Code
 
 ---
 
-## 📌 Delete Task
+## Delete Task
 
 ```http
 DELETE /tasks/4
@@ -252,9 +278,9 @@ Response
 
 ---
 
-# ❌ Error Responses
+# ❌ Error Handling
 
-### Task Not Found
+## Task Not Found
 
 ```json
 {
@@ -262,7 +288,7 @@ Response
 }
 ```
 
-Status Code
+Status
 
 ```
 404 Not Found
@@ -270,7 +296,7 @@ Status Code
 
 ---
 
-### Missing Title
+## Missing Title
 
 ```json
 {
@@ -278,7 +304,7 @@ Status Code
 }
 ```
 
-Status Code
+Status
 
 ```
 400 Bad Request
@@ -286,7 +312,7 @@ Status Code
 
 ---
 
-# 🧪 Testing the API
+# 🧪 Testing
 
 ## Browser
 
@@ -302,7 +328,7 @@ http://127.0.0.1:5000/tasks/1
 
 ## cURL
 
-### Get All Tasks
+### Get Tasks
 
 ```bash
 curl http://127.0.0.1:5000/tasks
@@ -334,7 +360,7 @@ curl -X DELETE http://127.0.0.1:5000/tasks/4
 
 # 💻 SQL Practice
 
-During this assignment SQL queries were executed directly using **DB Browser for SQLite**.
+During this assignment, SQL queries were executed directly using **DB Browser for SQLite**.
 
 ### View All Tasks
 
@@ -363,18 +389,18 @@ Returns only completed tasks.
 SELECT COUNT(*) FROM tasks;
 ```
 
-Returns the total number of tasks.
+Returns the total number of tasks stored in the database.
 
 ---
 
-### Mark All Tasks Completed
+### Mark All Tasks as Completed
 
 ```sql
 UPDATE tasks
 SET done = 1;
 ```
 
-Updates every task as completed.
+Updates every task in the database.
 
 ---
 
@@ -385,52 +411,72 @@ DELETE FROM tasks
 WHERE done = 1;
 ```
 
-Removes all completed tasks.
+Deletes all completed tasks.
+
+---
+
+# 📷 Database Screenshot
+
+Open **DB Browser for SQLite** and include a screenshot of your database here.
+
+Example:
+
+```
+images/database.png
+```
+
+```markdown
+![Database Screenshot](images/database.png)
+```
 
 ---
 
 # 📚 What I Learned
 
-- REST API fundamentals
-- CRUD operations
-- Flask routing
-- SQLite database integration
-- SQL queries
-- Parameterized SQL statements
-- HTTP methods (GET, POST, PUT, DELETE)
-- HTTP status codes
-- Persistent data storage
-- API testing using Browser and cURL
-- Version control with Git & GitHub
+Through this project, I learned how to:
+
+- Build REST APIs using Flask
+- Perform CRUD operations
+- Connect Flask with SQLite
+- Create databases automatically
+- Seed initial data
+- Execute SQL queries
+- Use parameterized SQL statements
+- Return JSON responses
+- Handle HTTP status codes correctly
+- Test APIs using Browser and cURL
+- Manage backend projects with Git and GitHub
 
 ---
 
 # 🎯 Learning Outcomes
 
-By completing this project I learned how to:
+This project strengthened my understanding of:
 
-- Design RESTful APIs
-- Store data permanently using SQLite
-- Connect Flask with a relational database
-- Validate user input
-- Return proper JSON responses
-- Handle HTTP status codes correctly
-- Execute SQL directly in SQLite
-- Understand how APIs interact with databases
+- Backend Development Fundamentals
+- RESTful API Design
+- Database Integration
+- Persistent Data Storage
+- SQL Query Execution
+- Flask Routing
+- Input Validation
+- CRUD Operations
+- API Testing
+- Version Control
 
 ---
 
 # 🚀 Future Improvements
 
-- Authentication (JWT)
-- User accounts
-- Search tasks
-- Task filtering
+- User Authentication
+- JWT Authorization
+- Task Categories
+- Search & Filtering
 - Pagination
-- Docker support
-- Swagger/OpenAPI documentation
-- Automated testing with Pytest
-- Cloud deployment (Render / Railway)
+- API Documentation (Swagger/OpenAPI)
+- Unit Testing with Pytest
+- Docker Support
+- Cloud Deployment (Render/Railway)
 
 ---
 
@@ -440,18 +486,16 @@ By completing this project I learned how to:
 
 Backend Developer | Python Developer
 
-📧 Email: your-email@example.com
-
-💼 LinkedIn
-
-```
-https://linkedin.com/in/mianhasssan
-```
-
-🐙 GitHub
+🔗 **GitHub**
 
 ```
 https://github.com/mianhasssan
+```
+
+🔗 **LinkedIn**
+
+```
+https://linkedin.com/in/mianhasssan
 ```
 
 ---
