@@ -84,5 +84,96 @@ def create_task():
 
 
 
+@app.route("/tasks/<int:task_id>", methods=["PUT"])
+def update_task(task_id):
+
+    data = request.get_json()
+
+    # Validate request body
+    if not data or "title" not in data or "done" not in data:
+        return jsonify({
+            "error": "Title and done are required"
+        }), 400
+
+    title = data["title"].strip()
+    done = int(bool(data["done"]))
+
+    if title == "":
+        return jsonify({
+            "error": "Title is required"
+        }), 400
+
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    # Check if task exists
+    task = connection.execute(
+        "SELECT * FROM tasks WHERE id = ?",
+        (task_id,)
+    ).fetchone()
+
+    if task is None:
+        connection.close()
+        return jsonify({
+            "error": "Task not found"
+        }), 404
+
+    # Update task
+    cursor.execute(
+        """
+        UPDATE tasks
+        SET title = ?, done = ?
+        WHERE id = ?
+        """,
+        (title, done, task_id)
+    )
+
+    connection.commit()
+
+    updated_task = connection.execute(
+        "SELECT * FROM tasks WHERE id = ?",
+        (task_id,)
+    ).fetchone()
+
+    connection.close()
+
+    return jsonify(dict(updated_task))
+
+
+
+
+
+@app.route("/tasks/<int:task_id>", methods=["DELETE"])
+def delete_task(task_id):
+
+    connection = get_db_connection()
+
+    task = connection.execute(
+        "SELECT * FROM tasks WHERE id = ?",
+        (task_id,)
+    ).fetchone()
+
+    if task is None:
+        connection.close()
+        return jsonify({
+            "error": "Task not found"
+        }), 404
+
+    connection.execute(
+        "DELETE FROM tasks WHERE id = ?",
+        (task_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return "", 204
+
+
+
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
