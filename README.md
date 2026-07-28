@@ -1,160 +1,461 @@
-# Tiny Backend API
+# 🚀 Tiny Backend API with SQLite
 
-A minimal Flask-based REST API demonstrating the fundamentals of backend development, HTTP request handling, and JSON responses. This project was built as a learning exercise to understand the request–response lifecycle and establish a professional GitHub workflow.
+A lightweight **Flask REST API** that demonstrates the fundamentals of backend development using **Python**, **Flask**, and **SQLite**. This project implements a complete **CRUD (Create, Read, Update, Delete)** API with persistent data storage and serves as a practical introduction to RESTful API development.
 
-## Features
+---
 
-* Lightweight Flask server
-* Two JSON API endpoints
-* RESTful GET requests
-* Clean and beginner-friendly codebase
-* Ready for local development
+## 📖 Project Overview
 
-## Tech Stack
+This project was developed as part of the **FlyRank Backend Internship** to understand:
 
-* Python 3
-* Flask
+- Building REST APIs with Flask
+- Working with SQLite databases
+- Implementing CRUD operations
+- Executing SQL queries
+- Testing APIs using Browser and cURL
+- Managing projects with Git & GitHub
 
-## Project Structure
+Unlike the first assignment, where data existed only in memory, this project stores data permanently in a SQLite database (`tasks.db`).
+
+---
+
+# ✨ Features
+
+- ✅ RESTful API
+- ✅ SQLite database integration
+- ✅ Persistent data storage
+- ✅ Complete CRUD operations
+- ✅ JSON responses
+- ✅ Input validation
+- ✅ Proper HTTP status codes
+- ✅ Parameterized SQL queries
+- ✅ Tested with Browser, cURL & DB Browser for SQLite
+
+---
+
+# 🛠 Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Python 3 | Programming Language |
+| Flask | Backend Framework |
+| SQLite3 | Database |
+| DB Browser for SQLite | Database Viewer |
+| Git | Version Control |
+| GitHub | Project Hosting |
+| cURL | API Testing |
+
+---
+
+# 📂 Project Structure
 
 ```text
 tiny-backend/
+│
 ├── app.py
+├── database.py
+├── tasks.db
 ├── requirements.txt
 ├── README.md
-└── .gitignore
+├── .gitignore
+└── venv/
 ```
 
-## Getting Started
+---
 
-### 1. Clone the repository
+# ⚙️ Installation
+
+## 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/tiny-backend.git
+git clone https://github.com/YOUR_USERNAME/tiny-backend.git
+```
+
+```bash
 cd tiny-backend
 ```
 
-### 2. Create a virtual environment
+---
 
-**Windows**
+## 2️⃣ Create Virtual Environment
+
+### Windows
 
 ```bash
 python -m venv venv
+```
+
+```bash
 venv\Scripts\activate
 ```
 
-**macOS/Linux**
+### macOS/Linux
 
 ```bash
 python3 -m venv venv
+```
+
+```bash
 source venv/bin/activate
 ```
 
-### 3. Install dependencies
+---
+
+## 3️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Start the development server
+---
+
+## 4️⃣ Start Server
 
 ```bash
 python app.py
 ```
 
-The application will be available at:
+Server runs on
 
-```text
+```
 http://127.0.0.1:5000
-```
-
-## API Endpoints
-
-### GET /
-
-Returns a welcome message.
-
-**Request**
-
-```http
-GET /
-```
-
-**Response**
-
-```json
-{
-  "status": "success",
-  "message": "Welcome to my Tiny Backend API"
-}
 ```
 
 ---
 
-### GET /hello
+# 🗄 Database
 
-Returns a simple greeting.
+Database File
 
-**Request**
-
-```http
-GET /hello
+```
+tasks.db
 ```
 
-**Response**
+Table
+
+```sql
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    done INTEGER NOT NULL DEFAULT 0
+);
+```
+
+---
+
+# 🌐 API Endpoints
+
+## 📌 Get All Tasks
+
+```http
+GET /tasks
+```
+
+Response
+
+```json
+[
+  {
+    "id":1,
+    "title":"Learn SQLite",
+    "done":0
+  }
+]
+```
+
+---
+
+## 📌 Get Single Task
+
+```http
+GET /tasks/1
+```
+
+---
+
+## 📌 Create Task
+
+```http
+POST /tasks
+```
+
+Request
 
 ```json
 {
-  "message": "Hello, World!"
+    "title":"Learn Flask"
 }
 ```
 
-## Testing the API
+Response
 
-### Using a Web Browser
-
-Visit:
-
-```text
-http://127.0.0.1:5000/
+```json
+{
+    "id":4,
+    "title":"Learn Flask",
+    "done":0
+}
 ```
 
-or
+Status Code
 
-```text
-http://127.0.0.1:5000/hello
+```
+201 Created
 ```
 
-### Using curl
+---
+
+## 📌 Update Task
+
+```http
+PUT /tasks/4
+```
+
+Request
+
+```json
+{
+    "title":"Learn Flask Updated",
+    "done":true
+}
+```
+
+Response
+
+```json
+{
+    "id":4,
+    "title":"Learn Flask Updated",
+    "done":1
+}
+```
+
+Status Code
+
+```
+200 OK
+```
+
+---
+
+## 📌 Delete Task
+
+```http
+DELETE /tasks/4
+```
+
+Response
+
+```
+204 No Content
+```
+
+---
+
+# ❌ Error Responses
+
+### Task Not Found
+
+```json
+{
+    "error":"Task not found"
+}
+```
+
+Status Code
+
+```
+404 Not Found
+```
+
+---
+
+### Missing Title
+
+```json
+{
+    "error":"Title is required"
+}
+```
+
+Status Code
+
+```
+400 Bad Request
+```
+
+---
+
+# 🧪 Testing the API
+
+## Browser
+
+```
+http://127.0.0.1:5000/tasks
+```
+
+```
+http://127.0.0.1:5000/tasks/1
+```
+
+---
+
+## cURL
+
+### Get All Tasks
 
 ```bash
-curl http://127.0.0.1:5000/
+curl http://127.0.0.1:5000/tasks
 ```
+
+### Create Task
 
 ```bash
-curl http://127.0.0.1:5000/hello
+curl -X POST http://127.0.0.1:5000/tasks ^
+-H "Content-Type: application/json" ^
+-d "{\"title\":\"Learn Flask\"}"
 ```
 
-## Learning Objectives
+### Update Task
 
-This project demonstrates:
+```bash
+curl -X PUT http://127.0.0.1:5000/tasks/4 ^
+-H "Content-Type: application/json" ^
+-d "{\"title\":\"Updated Task\",\"done\":true}"
+```
 
-* Building a backend server with Flask
-* Creating REST API endpoints
-* Returning JSON responses
-* Understanding the HTTP request–response cycle
-* Testing APIs using both a browser and `curl`
-* Managing a project with Git and GitHub
+### Delete Task
 
-## Future Improvements
+```bash
+curl -X DELETE http://127.0.0.1:5000/tasks/4
+```
 
-* Add POST endpoints
-* Implement request validation
-* Add error handling
-* Introduce environment variables
-* Write automated tests
-* Deploy the API to a cloud platform (Render, Railway, or PythonAnywhere)
+---
 
+# 💻 SQL Practice
 
-* GitHub: https://github.com/<mianhasssan>
-* LinkedIn: https://www.linkedin.com/in/<mianhasssan>
+During this assignment SQL queries were executed directly using **DB Browser for SQLite**.
+
+### View All Tasks
+
+```sql
+SELECT * FROM tasks;
+```
+
+Displays every task stored in the database.
+
+---
+
+### View Completed Tasks
+
+```sql
+SELECT * FROM tasks
+WHERE done = 1;
+```
+
+Returns only completed tasks.
+
+---
+
+### Count Tasks
+
+```sql
+SELECT COUNT(*) FROM tasks;
+```
+
+Returns the total number of tasks.
+
+---
+
+### Mark All Tasks Completed
+
+```sql
+UPDATE tasks
+SET done = 1;
+```
+
+Updates every task as completed.
+
+---
+
+### Delete Completed Tasks
+
+```sql
+DELETE FROM tasks
+WHERE done = 1;
+```
+
+Removes all completed tasks.
+
+---
+
+# 📚 What I Learned
+
+- REST API fundamentals
+- CRUD operations
+- Flask routing
+- SQLite database integration
+- SQL queries
+- Parameterized SQL statements
+- HTTP methods (GET, POST, PUT, DELETE)
+- HTTP status codes
+- Persistent data storage
+- API testing using Browser and cURL
+- Version control with Git & GitHub
+
+---
+
+# 🎯 Learning Outcomes
+
+By completing this project I learned how to:
+
+- Design RESTful APIs
+- Store data permanently using SQLite
+- Connect Flask with a relational database
+- Validate user input
+- Return proper JSON responses
+- Handle HTTP status codes correctly
+- Execute SQL directly in SQLite
+- Understand how APIs interact with databases
+
+---
+
+# 🚀 Future Improvements
+
+- Authentication (JWT)
+- User accounts
+- Search tasks
+- Task filtering
+- Pagination
+- Docker support
+- Swagger/OpenAPI documentation
+- Automated testing with Pytest
+- Cloud deployment (Render / Railway)
+
+---
+
+# 👨‍💻 Author
+
+**Mian Muhammad Hassan**
+
+Backend Developer | Python Developer
+
+📧 Email: your-email@example.com
+
+💼 LinkedIn
+
+```
+https://linkedin.com/in/mianhasssan
+```
+
+🐙 GitHub
+
+```
+https://github.com/mianhasssan
+```
+
+---
+
+# 📜 License
+
+This project was created for educational purposes as part of the **FlyRank Backend Internship Program**.
