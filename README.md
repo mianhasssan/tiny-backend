@@ -431,6 +431,15 @@ images/database.png
 
 ---
 
+## PostgreSQL with Docker
+
+This project now uses PostgreSQL running inside a Docker container instead of SQLite.
+
+### Start PostgreSQL
+
+```bash
+docker run --name taskdb -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=tasks -p 5432:5432 -v taskdata:/var/lib/postgresql/data -d postgres:17
+
 # 📚 What I Learned
 
 Through this project, I learned how to:
