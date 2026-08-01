@@ -1,45 +1,49 @@
 from flask import Flask, jsonify , request
-import sqlite3
 import db
 
 app = Flask(__name__)
 
-def get_db_connection():
-    connection = sqlite3.connect("tasks.db")
-    connection.row_factory = sqlite3.Row
-    return connection
-
 @app.route("/tasks", methods=["GET"])
 def get_tasks():
-    connection = get_db_connection()
 
-    tasks = connection.execute(
-        "SELECT * FROM tasks"
-    ).fetchall()
+    db.cursor.execute(
+        "SELECT id, title, done FROM tasks ORDER BY id"
+    )
 
-    connection.close()
+    tasks = db.cursor.fetchall()
 
-    return jsonify([dict(task) for task in tasks])
+    task_list = []
+
+    for task in tasks:
+        task_list.append({
+            "id": task[0],
+            "title": task[1],
+            "done": task[2]
+        })
+
+    return jsonify(task_list)
 
 
 @app.route("/tasks/<int:task_id>", methods=["GET"])
 def get_task(task_id):
-    connection = get_db_connection()
 
-    task = connection.execute(
-        "SELECT * FROM tasks WHERE id = ?",
+    db.cursor.execute(
+        "SELECT id, title, done FROM tasks WHERE id = %s",
         (task_id,)
-    ).fetchone()
+    )
 
-    connection.close()
+    task = db.cursor.fetchone()
 
     if task is None:
         return jsonify({
             "error": "Task not found"
         }), 404
 
-    return jsonify(dict(task))
-
+    return jsonify({
+        "id": task[0],
+        "title": task[1],
+        "done": task[2]
+    })
 @app.route("/tasks", methods=["POST"])
 def create_task():
 
