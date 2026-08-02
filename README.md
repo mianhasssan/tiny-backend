@@ -372,9 +372,9 @@ images/postgres-table.png
 
 Example:
 
-```markdown
+## 📸 PostgreSQL Database
+
 ![PostgreSQL Table](images/postgres-table.png)
-```
 
 ---
 
