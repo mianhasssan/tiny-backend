@@ -364,15 +364,8 @@ This means:
 
 ## PostgreSQL Table
 
-Add your screenshot here.
-
-```
-images/postgres-table.png
-```
 
 Example:
-
-## 📸 PostgreSQL Database
 
 ![PostgreSQL Table](images/postgres-table.png)
 
