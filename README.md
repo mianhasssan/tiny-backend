@@ -1,91 +1,125 @@
-# 🚀 Tiny Backend API with SQLite
+# 🚀 Tiny Backend API with Flask, PostgreSQL & Docker
 
-![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
-![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask)
-![SQLite](https://img.shields.io/badge/Database-SQLite-blue?logo=sqlite)
-![License](https://img.shields.io/badge/License-Educational-green)
+A production-style REST API built with **Flask**, **PostgreSQL**, and **Docker Compose**. This project demonstrates how to build a backend application that performs full CRUD operations while using a PostgreSQL database running inside Docker containers.
 
-A lightweight RESTful API built with **Python**, **Flask**, and **SQLite** that demonstrates complete CRUD (Create, Read, Update, Delete) operations. This project was developed as part of the **FlyRank Backend Internship** to learn backend development, database integration, REST APIs, SQL, and GitHub workflow.
+The application automatically creates the database schema, seeds sample data on first run, and can be started with a single Docker Compose command.
 
 ---
 
 # 📖 Project Overview
 
-This project demonstrates how a backend application communicates with a SQLite database to store and manage persistent data.
+This project demonstrates:
 
-Unlike Assignment 1, where tasks were stored in memory and disappeared after restarting the server, this version stores all tasks inside a SQLite database (`tasks.db`), allowing data to persist across application restarts.
+- Building REST APIs using Flask
+- PostgreSQL database integration
+- Docker containerization
+- Docker Compose orchestration
+- Environment variable management
+- Automatic database initialization
+- CRUD operations (Create, Read, Update, Delete)
+- Persistent database storage using Docker Volumes
+
+Unlike previous versions that used SQLite, this project uses a real PostgreSQL database server running in its own Docker container, closely matching production backend environments.
 
 ---
 
 # ✨ Features
 
-- ✅ Flask REST API
-- ✅ SQLite Database Integration
-- ✅ Complete CRUD Operations
-- ✅ Persistent Data Storage
-- ✅ Automatic Database Creation
+- ✅ RESTful API
+- ✅ PostgreSQL Database
+- ✅ Dockerized Application
+- ✅ Docker Compose
 - ✅ Automatic Table Creation
-- ✅ Automatic Sample Data Seeding
-- ✅ JSON Responses
-- ✅ Input Validation
-- ✅ Proper HTTP Status Codes
+- ✅ Automatic Database Seeding
+- ✅ Persistent Storage using Docker Volumes
+- ✅ Environment Variables (.env)
 - ✅ Parameterized SQL Queries
-- ✅ Browser & cURL Testing
-- ✅ SQL Practice with DB Browser for SQLite
+- ✅ JSON API Responses
+- ✅ Error Handling
+- ✅ Clean Project Structure
 
 ---
 
 # 🛠 Tech Stack
 
 | Technology | Purpose |
-|------------|---------|
-| Python 3 | Programming Language |
-| Flask | Backend Framework |
-| SQLite3 | Local Database |
-| DB Browser for SQLite | Database Viewer |
-| Git | Version Control |
-| GitHub | Source Code Hosting |
-| cURL | API Testing |
+|------------|----------|
+| Python 3.13 | Programming Language |
+| Flask | Web Framework |
+| PostgreSQL 17 | Database |
+| Psycopg | PostgreSQL Driver |
+| Docker | Containerization |
+| Docker Compose | Multi-container Management |
+| Python Dotenv | Environment Variables |
 
 ---
 
-# 📂 Project Structure
+# 📁 Project Structure
 
 ```text
 tiny-backend/
 │
 ├── app.py
+├── db.py
+├── docker-compose.yml
+├── Dockerfile
 ├── requirements.txt
-├── README.md
+├── .env.example
 ├── .gitignore
-├── images/
-│   └── database.png
-└── tasks.db (created automatically)
+├── README.md
+└── tasks.db (used in previous assignment)
 ```
 
 ---
 
-# 💡 Why SQLite?
+# ⚙️ Prerequisites
 
-SQLite was chosen because it is:
+Install the following:
 
-- Lightweight
-- Serverless
-- Zero configuration
-- Fast for small projects
-- Stores everything inside one database file
-- Perfect for learning backend development
-
-Unlike storing data in Python lists, SQLite keeps data even after restarting the application.
+- Python 3.13+
+- Docker Desktop
+- Git
 
 ---
 
-# ⚙️ Installation
+# 🔑 Environment Variables
+
+Create a `.env` file in the project root.
+
+Example:
+
+```env
+DATABASE_URL=postgresql://postgres:dev@db:5432/tasks
+```
+
+An example file is already provided:
+
+```
+.env.example
+```
+
+Simply copy it:
+
+### Windows
+
+```cmd
+copy .env.example .env
+```
+
+### Linux / macOS
+
+```bash
+cp .env.example .env
+```
+
+---
+
+# 🚀 Running the Project
 
 ## Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/tiny-backend.git
+git clone https://github.com/mianhasssan/tiny-backend.git
 ```
 
 ```bash
@@ -94,82 +128,60 @@ cd tiny-backend
 
 ---
 
-## Create Virtual Environment
-
-### Windows
+## Build and Start Everything
 
 ```bash
-python -m venv venv
+docker compose up --build
 ```
 
-```bash
-venv\Scripts\activate
-```
+This single command automatically:
 
-### macOS/Linux
+- Builds the Flask application
+- Downloads PostgreSQL
+- Creates the database
+- Creates the tasks table
+- Seeds three sample tasks
+- Starts both containers
+
+---
+
+## Stop Containers
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+docker compose down
 ```
 
 ---
 
-## Install Dependencies
+## Rebuild
 
 ```bash
-pip install -r requirements.txt
+docker compose up --build
 ```
 
 ---
 
-# ▶️ Run the Project
-
-Start the Flask server:
-
-```bash
-python app.py
-```
-
-Server URL
+# 🌐 API Base URL
 
 ```
 http://127.0.0.1:5000
 ```
 
-The application automatically:
+---
 
-- Creates `tasks.db`
-- Creates the `tasks` table
-- Inserts three sample tasks (only if the table is empty)
+# 📌 API Endpoints
 
-No manual database setup is required.
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | /tasks | Get all tasks |
+| GET | /tasks/{id} | Get task by ID |
+| POST | /tasks | Create new task |
+| PUT | /tasks/{id} | Update task |
+| DELETE | /tasks/{id} | Delete task |
 
 ---
 
-# 🗄 Database
-
-Database File
-
-```
-tasks.db
-```
-
-The database file is automatically generated the first time the application runs.
-
-Table Structure
-
-```sql
-CREATE TABLE tasks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    done INTEGER NOT NULL DEFAULT 0
-);
-```
-
----
-
-# 🌐 API Endpoints
+# 📥 Example Requests
 
 ## Get All Tasks
 
@@ -177,15 +189,31 @@ CREATE TABLE tasks (
 GET /tasks
 ```
 
+Example:
+
+```bash
+curl http://127.0.0.1:5000/tasks
+```
+
 Response
 
 ```json
 [
-    {
-        "id":1,
-        "title":"Learn SQLite",
-        "done":0
-    }
+  {
+    "id":1,
+    "title":"Learn PostgreSQL",
+    "done":false
+  },
+  {
+    "id":2,
+    "title":"Connect Flask to Docker",
+    "done":false
+  },
+  {
+    "id":3,
+    "title":"Build CRUD API",
+    "done":false
+  }
 ]
 ```
 
@@ -205,28 +233,20 @@ GET /tasks/1
 POST /tasks
 ```
 
-Request
-
-```json
-{
-    "title":"Learn Flask"
-}
+```bash
+curl -X POST http://127.0.0.1:5000/tasks ^
+-H "Content-Type: application/json" ^
+-d "{\"title\":\"Learn Docker Compose\"}"
 ```
 
 Response
 
 ```json
 {
-    "id":4,
-    "title":"Learn Flask",
-    "done":0
+  "id":4,
+  "title":"Learn Docker Compose",
+  "done":false
 }
-```
-
-Status Code
-
-```
-201 Created
 ```
 
 ---
@@ -237,29 +257,10 @@ Status Code
 PUT /tasks/4
 ```
 
-Request
-
-```json
-{
-    "title":"Learn Flask Updated",
-    "done":true
-}
-```
-
-Response
-
-```json
-{
-    "id":4,
-    "title":"Learn Flask Updated",
-    "done":1
-}
-```
-
-Status Code
-
-```
-200 OK
+```bash
+curl -X PUT http://127.0.0.1:5000/tasks/4 ^
+-H "Content-Type: application/json" ^
+-d "{\"title\":\"Docker Complete\",\"done\":true}"
 ```
 
 ---
@@ -270,7 +271,11 @@ Status Code
 DELETE /tasks/4
 ```
 
-Response
+```bash
+curl -X DELETE http://127.0.0.1:5000/tasks/4
+```
+
+Returns:
 
 ```
 204 No Content
@@ -278,237 +283,167 @@ Response
 
 ---
 
-# ❌ Error Handling
+# 🗄 Database
 
-## Task Not Found
+This project uses **PostgreSQL** running inside Docker.
 
-```json
-{
-    "error":"Task not found"
-}
-```
+The application automatically:
 
-Status
-
-```
-404 Not Found
-```
+- Creates the `tasks` table
+- Seeds three example tasks
+- Connects using environment variables
+- Uses parameterized SQL queries
+- Stores data inside a Docker Volume
 
 ---
 
-## Missing Title
+## Example SQL Queries
 
-```json
-{
-    "error":"Title is required"
-}
-```
-
-Status
-
-```
-400 Bad Request
-```
-
----
-
-# 🧪 Testing
-
-## Browser
-
-```
-http://127.0.0.1:5000/tasks
-```
-
-```
-http://127.0.0.1:5000/tasks/1
-```
-
----
-
-## cURL
-
-### Get Tasks
-
-```bash
-curl http://127.0.0.1:5000/tasks
-```
-
-### Create Task
-
-```bash
-curl -X POST http://127.0.0.1:5000/tasks ^
--H "Content-Type: application/json" ^
--d "{\"title\":\"Learn Flask\"}"
-```
-
-### Update Task
-
-```bash
-curl -X PUT http://127.0.0.1:5000/tasks/4 ^
--H "Content-Type: application/json" ^
--d "{\"title\":\"Updated Task\",\"done\":true}"
-```
-
-### Delete Task
-
-```bash
-curl -X DELETE http://127.0.0.1:5000/tasks/4
-```
-
----
-
-# 💻 SQL Practice
-
-During this assignment, SQL queries were executed directly using **DB Browser for SQLite**.
-
-### View All Tasks
+### List all tasks
 
 ```sql
 SELECT * FROM tasks;
 ```
 
-Displays every task stored in the database.
-
----
-
-### View Completed Tasks
-
-```sql
-SELECT * FROM tasks
-WHERE done = 1;
-```
-
-Returns only completed tasks.
-
----
-
-### Count Tasks
+### Count tasks
 
 ```sql
 SELECT COUNT(*) FROM tasks;
 ```
 
-Returns the total number of tasks stored in the database.
+### Completed tasks
 
----
+```sql
+SELECT * FROM tasks WHERE done = TRUE;
+```
 
-### Mark All Tasks as Completed
+### Update tasks
 
 ```sql
 UPDATE tasks
-SET done = 1;
+SET done = TRUE
+WHERE id = 1;
 ```
-
-Updates every task in the database.
 
 ---
 
-### Delete Completed Tasks
+# 💾 Persistent Storage
 
-```sql
-DELETE FROM tasks
-WHERE done = 1;
+PostgreSQL data is stored inside a Docker Volume.
+
+```
+taskdata
 ```
 
-Deletes all completed tasks.
+This means:
+
+- Stopping containers does **not** delete your data.
+- Restarting Docker Compose preserves all tasks.
+- Data survives application restarts.
 
 ---
 
-# 📷 Database Screenshot
+# 🐳 Docker Architecture
 
-Open **DB Browser for SQLite** and include a screenshot of your database here.
+```
+                Browser / curl
+                       │
+                       ▼
+              Flask API Container
+                       │
+                       ▼
+          PostgreSQL Database Container
+                       │
+                       ▼
+              Docker Volume (taskdata)
+```
+
+---
+
+# 📷 Screenshots
+
+## PostgreSQL Table
+
+Add your screenshot here.
+
+```
+images/postgres-table.png
+```
 
 Example:
 
-```
-images/database.png
-```
-
 ```markdown
-![Database Screenshot](images/database.png)
+![PostgreSQL Table](images/postgres-table.png)
 ```
 
 ---
 
-## PostgreSQL with Docker
+# 📚 Learning Outcomes
 
-This project now uses PostgreSQL running inside a Docker container instead of SQLite.
+This project helped me learn:
 
-### Start PostgreSQL
-
-```bash
-docker run --name taskdb -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=tasks -p 5432:5432 -v taskdata:/var/lib/postgresql/data -d postgres:17
-
-# 📚 What I Learned
-
-Through this project, I learned how to:
-
-- Build REST APIs using Flask
-- Perform CRUD operations
-- Connect Flask with SQLite
-- Create databases automatically
-- Seed initial data
-- Execute SQL queries
-- Use parameterized SQL statements
-- Return JSON responses
-- Handle HTTP status codes correctly
-- Test APIs using Browser and cURL
-- Manage backend projects with Git and GitHub
-
----
-
-# 🎯 Learning Outcomes
-
-This project strengthened my understanding of:
-
-- Backend Development Fundamentals
-- RESTful API Design
-- Database Integration
-- Persistent Data Storage
-- SQL Query Execution
-- Flask Routing
-- Input Validation
+- Flask API Development
+- PostgreSQL
+- SQL Queries
 - CRUD Operations
-- API Testing
-- Version Control
+- Docker
+- Docker Compose
+- Container Networking
+- Environment Variables
+- Database Seeding
+- Docker Volumes
+- REST API Design
+- JSON Responses
+- Parameterized Queries
+- Professional Project Structure
 
 ---
 
-# 🚀 Future Improvements
+# 🔮 Future Improvements
 
-- User Authentication
-- JWT Authorization
-- Task Categories
-- Search & Filtering
+- JWT Authentication
+- User Accounts
+- Search API
 - Pagination
+- Filtering
+- Unit Testing
+- CI/CD Pipeline
 - API Documentation (Swagger/OpenAPI)
-- Unit Testing with Pytest
-- Docker Support
-- Cloud Deployment (Render/Railway)
+- SQLAlchemy ORM
+- Layered Architecture
+- Deployment to Render or Railway
 
 ---
 
 # 👨‍💻 Author
 
-**Mian Muhammad Hassan**
+**Muhammad Hassan**
 
-Backend Developer | Python Developer
+Backend Developer | Python Developer | AI & Web Development Enthusiast
 
-🔗 **GitHub**
+**GitHub**
 
-```
 https://github.com/mianhasssan
-```
 
-🔗 **LinkedIn**
+**LinkedIn**
 
-```
-https://linkedin.com/in/mianhasssan
-```
+https://www.linkedin.com/in/mianhasssan
 
 ---
 
-# 📜 License
+# ⭐ Assignment Summary
 
-This project was created for educational purposes as part of the **FlyRank Backend Internship Program**.
+This project demonstrates a complete backend application using Flask and PostgreSQL running inside Docker containers.
+
+Key achievements include:
+
+- Full REST API
+- PostgreSQL Integration
+- Docker Containerization
+- Docker Compose Setup
+- Automatic Database Initialization
+- Persistent Storage
+- Professional Documentation
+- Production-style Project Structure
+
+This project was completed as part of the **FlyRank Backend Internship Program**.
